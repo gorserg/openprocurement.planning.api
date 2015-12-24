@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 from couchdb.design import ViewDefinition
-from openprocurement.api import design
 from openprocurement.api.design import add_index_options
 
 FIELDS = [
@@ -11,14 +10,8 @@ CHANGES_FIELDS = FIELDS + [
 ]
 
 
-def add_design():
-    for i, j in globals().items():
-        if "_view" in i:
-            setattr(design, i, j)
-
-
-def add_design_db(db):
-    """ add local views *_view to database
+def add_design(db):
+    """Add local views *_view to database
     :param db: database
     """
     views = [j for i, j in globals().items() if "_view" in i]
