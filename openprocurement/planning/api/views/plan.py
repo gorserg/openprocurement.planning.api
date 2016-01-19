@@ -500,3 +500,72 @@ class PlanResource(object):
         LOGGER.info('Updated plan {}'.format(plan.id),
                     extra=context_unpack(self.request, {'MESSAGE_ID': 'plan_patch'}))
         return {'data': plan.serialize('view')}
+
+
+@opresource(name='Plan Changes',
+            path='/plans/{plan_id}/changes',
+            description="Changes of plan")
+class PlanChangesResource(object):
+    def __init__(self, request, context):
+        self.request = request
+        self.db = request.registry.db
+
+    @json_view(permission='view_plan')
+    def get(self):
+        """Plan changes
+
+        Example request to get plan changes:
+
+        .. sourcecode:: http
+
+            GET /plans/62179f8f94a246239268750a6eb0e53f/changes HTTP/1.1
+            Host: example.com
+            Accept: application/json
+
+        This is what one should expect in response:
+
+        .. sourcecode:: http
+
+            HTTP/1.1 200 OK
+            Content-Type: application/json
+
+            {
+                "data": [{
+                    "date": "2016-01-20T00:56:29.928710+02:00",
+                    "changes": [{
+                        "path": "/classification",
+                        "op": "remove"
+                    }, {
+                        "path": "/items",
+                        "op": "remove"
+                    }, {
+                        "path": "/planID",
+                        "op": "remove"
+                    }, {
+                        "path": "/budget",
+                        "op": "remove"
+                    }, {
+                        "path": "/owner",
+                        "op": "remove"
+                    }, {
+                        "path": "/additionalClassifications",
+                        "op": "remove"
+                    }, {
+                        "path": "/owner_token",
+                        "op": "remove"
+                    }, {
+                        "path": "/procuringEntity",
+                        "op": "remove"
+                    }, {
+                        "path": "/tender",
+                        "op": "remove"
+                    }, {
+                        "path": "/id",
+                        "op": "remove"
+                    }],
+                    "author": "broker"
+                }]
+            }
+
+        """
+        return {'data': [i.serialize() for i in self.request.validated['plan'].revisions]}
