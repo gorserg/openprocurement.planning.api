@@ -1,0 +1,13 @@
+doc-warnings: yes
+test-warnings: yes
+strictness: veryhigh
+max-line-length: 120
+pep8:
+    full: true
+autodetect: yes
+requirements:
+    - requirements.txt
+ignore-paths:
+    - docs
+python-targets:
+    - 2
