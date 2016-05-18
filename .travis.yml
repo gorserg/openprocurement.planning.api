@@ -18,6 +18,7 @@ script:
   - bin/nosetests
 after_success:
   - bin/coveralls
+  - bash <(curl -s https://codecov.io/bash)
 notifications:
   webhooks:
     urls:
